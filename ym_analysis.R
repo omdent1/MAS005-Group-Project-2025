@@ -11,8 +11,8 @@ output_plot_file <- file.path(output_dir, "boxplot_ym.png")
 # --- Function to Read YM Data ---
 read_ym_data <- function(file_path) {
   if (file.exists(file_path)) {
-    ym_df <- read.csv(file_path, header = FALSE)
-    return(ym_df$V1) # Assuming YM values are in the first column
+    ym_df <- read.csv(file_path, header = TRUE)
+    return(ym_df[[1]]) # Safely extract the first column
   } else {
     cat(paste("Error: File not found:", file_path, "\n"))
     return(NULL)
@@ -29,10 +29,10 @@ if (!is.null(YM_material1_GPa) && !is.null(YM_material2_GPa)) {
 
   # Five-Number Summary
   cat("\nFive-Number Summary for Material 1:\n")
-  print(summary(YM_material1_GPa))
+  print(fivenum(YM_material1_GPa))
 
   cat("\nFive-Number Summary for Material 2:\n")
-  print(summary(YM_material2_GPa))
+  print(fivenum(YM_material2_GPa))
 
   # --- Export Boxplot as PNG Image ---
   png(filename = output_plot_file, width = 800, height = 600) # Open PNG device
